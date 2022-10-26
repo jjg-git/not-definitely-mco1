@@ -4,7 +4,7 @@
 #include <sys/time.h>
 #include <time.h>
 
-#define NUM_LETTERS 1024
+#define NUM_LETTERS 30
 // #define NUM_LETTERS 13
 // Default String
 
@@ -13,7 +13,8 @@ typedef char String[NUM_LETTERS + 1];
 typedef struct Suffix
 {
     int index;
-    String string;
+    // String string;
+    char* string;
 } SuffixStruct;
 
 /* ----- ----- ----- Method Headers  ----- ----- ----- */
@@ -97,10 +98,11 @@ void initializeSuffixArray(SuffixStruct suffixArray[], String text, int length) 
     for (i = 0; i < length; i++) {
 
         // Add the suffix to the array
+        suffixArray[i].string = (char*)malloc(sizeof(char));
         strcpy(suffixArray[i].string, &text[i]);
         suffixArray[i].index = i;
 
-        printf("%5d: %s\n", suffixArray[i].index, suffixArray[i].string);
+        // printf("%5d: %s\n", suffixArray[i].index, suffixArray[i].string);
     }
 }
 
@@ -301,6 +303,16 @@ void QuickSort (SuffixStruct suffixArray[], String T, int n, int indices[]) {
 }
 
 
+void freeString(SuffixStruct suffixArray[])
+{
+    int i;
+    for (i = 0; i < NUM_LETTERS; i++)
+    {
+        free(suffixArray[i].string);
+    }
+}
+
+
 /* ----- ----- ----- Main ----- ----- ----- */
 
 int main() {
@@ -330,7 +342,7 @@ int main() {
 
 
     // Print the input string
-    printf("Input String: \"%s\"\n\n", inputString);
+    // printf("Input String: \"%s\"\n\n", inputString);
     
     // printSuffixArray()
     
@@ -364,7 +376,7 @@ int main() {
     printf("\nInsertion Sort Time: %10ld microseconds\n", insertionSortTime);
     printf("Quick Sort Time:     %10ld microseconds\n", quickSortTime);
 
-
+    freeString(suffixArray);
 
     return 0;
 }
